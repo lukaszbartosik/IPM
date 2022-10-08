@@ -6,3 +6,15 @@
 p {
     text-align: center;
 }
+
+input:valid {
+    border-color: green;
+}
+
+input:invalid {
+    border-color: red;
+}
+
+input:focus:invalid {
+    outline: none;
+}
