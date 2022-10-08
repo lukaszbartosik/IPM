@@ -10,10 +10,16 @@
     <article>
         <h1>ADRES EMAIL</h1>
         <p1><form action="...">
-            <label for="phone">Wpisz tutaj adres email:</label>
-            <input type="text" name="EMAIL" placeholder="lukasz@edu.pl" pattern="lukasz@edu.pl">
+            <label for="email">Adres email w formacie: adres@adres.pl:</label>
+            <input type="text" name="EMAIL" placeholder="lukasz@edu.pl" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$">
         </form></p1>
-        <p2></p2>
+        <h2>KOD POCZTOWY</h2>
+        <p2>
+            <form action="...">
+                <label for="postcode">Wpisz tutaj adres email:</label>
+                <input type="text" name="POST CODE" placeholder="97-300" pattern="[0-9.-]{2,}$+-+[]0-9.-"{3,}>
+                <input type="submit">
+        </p2>
       </article>
   
      
