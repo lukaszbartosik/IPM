@@ -25,9 +25,9 @@
         .list {
 			background: turquoise;
 			width: 100%;
-			height: 30%;
+			height: 100%;
 			display: block;
-			float: inline-end;
+			float: left;
             
 		}
         </style>
@@ -49,6 +49,12 @@
 			box.style.backgroundColor = `hsl(${parseInt(Math.random() * 360)}, 100%, 50%)`;
 			box.style.top = Math.random() * 150 + area.offsetHeight / 2;
 			box.style.left = Math.random() * 150 + area.offsetWidth / 2;
+            area.appendChild(box);
+			dragElement(box);
 		}
+
+        dragElement(document.getElementById("e1"));
+		dragElement(document.getElementById("e2"));
+
     </script>
 </html>
