@@ -65,8 +65,8 @@
 			var box = document.createElement('div');
 			box.classList.add('drag_box');
 			box.style.backgroundColor = `hsl(${parseInt(Math.random() * 360)}, 100%, 50%)`;
-			box.style.top = Math.random() * 140 + area.offsetHeight / 2;
-			box.style.left = Math.random() * 160 + area.offsetWidth / 2;
+			box.style.top = Math.random() * 100 + area.offsetHeight / 2;
+			box.style.left = Math.random() * 180 + area.offsetWidth / 2;
             area.appendChild(box);
 			dragElement(box);
 		}
@@ -99,6 +99,10 @@
                 elmnt.style.top = (elmnt.offsetTop - pos2) + "px";
 				elmnt.style.left = (elmnt.offsetLeft - pos1) + "px";
 			}
+
+            function closeDragElement() {
+				// stop moving when mouse button is released:
+				document.onmouseup = null;
         }
 
     </script>
