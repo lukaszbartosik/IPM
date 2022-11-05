@@ -43,6 +43,12 @@
 	</body>
     <script>
 		var area = document.querySelector('.area');
-
+        function addBox() {
+			var box = document.createElement('div');
+			box.classList.add('drag_box');
+			box.style.backgroundColor = `hsl(${parseInt(Math.random() * 360)}, 100%, 50%)`;
+			box.style.top = Math.random() * 150 + area.offsetHeight / 2;
+			box.style.left = Math.random() * 150 + area.offsetWidth / 2;
+		}
     </script>
 </html>
