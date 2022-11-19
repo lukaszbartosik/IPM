@@ -13,9 +13,10 @@ window.msIDBTransaction;
 window.IDBKeyRange = window.IDBKeyRange || 
 window.webkitIDBKeyRange || window.msIDBKeyRange
 
-if (!window.indexedDB) {
+if (!window.indexedDB) 
+{
     window.alert("Your browser doesn't support a stable version of IndexedDB.")
- }
+}
 
  const employeeData = [
             { id: "00-01", name: "gopal", age: 35, email: "gopal@tutorialspoint.com" },
@@ -30,11 +31,23 @@ request.onerror = function(event)
     console.log("error: ");
 };
 
-request.onsuccess = function(event) {
+request.onsuccess = function(event) 
+{
             db = request.result;
             console.log("success: "+ db);
 };
 
-request.onupgradeneeded = function(event) {
-            var db = event.target.result;
-            var objectStore = db.createObjectStore("employee", {keyPath: "id"});
+request.onupgradeneeded = function(event) 
+{
+    var db = event.target.result;
+    var objectStore = db.createObjectStore("employee", {keyPath: "id"});
+        for (var i in employeeData) {
+               objectStore.add(employeeData[i]);
+        }
+}
+
+function read() 
+{
+            var transaction = db.transaction(["employee"]);
+            var objectStore = transaction.objectStore("employee");
+            var request = objectStore.get("00-03");
