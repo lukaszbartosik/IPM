@@ -101,3 +101,16 @@ function add()
         alert("Unable to add data\r\nKenny is aready exist in your database! ");
     }
 }
+
+function remove() 
+{    
+    var request = db.transaction(["employee"], "readwrite")
+    .objectStore("employee")
+    .delete("00-03");           
+    request.onsuccess = function(event) 
+    {
+
+        alert("Kenny's entry has been removed from your database.");
+    };
+}
+</script>
