@@ -33,4 +33,46 @@ export class IndexedDB
       });
   
     };
+
+
+set(storeName, name, value) 
+{
+    return new Promise((resolve, reject) => 
+    {
+      const
+        transaction = this.db.transaction(storeName, 'readwrite'),
+        store = transaction.objectStore(storeName);
+
+      store.put(value, name);
+
+      transaction.oncomplete = () => 
+      {
+        resolve(true); // success
+      };
+
+      transaction.onerror = () => 
+      {
+        reject(transaction.error); // porazka
+      };
+
+    });
+}
+
+get(storeName, name) 
+{
+    return new Promise((resolve, reject) => {
+      // new transaction
+      const
+        transaction = this.db.transaction(storeName, 'readonly'),
+        store = transaction.objectStore(storeName),
+        // read record
+        request = store.get(name);
+      request.onsuccess = () => {
+        resolve(request.result); // success
+      };
+      request.onerror = () => {
+        reject(request.error); // failure
+      };
+    }); 
+}
 }
