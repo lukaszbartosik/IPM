@@ -21,3 +21,10 @@ if (!window.indexedDB) {
             { id: "00-01", name: "gopal", age: 35, email: "gopal@tutorialspoint.com" },
             { id: "00-02", name: "prasad", age: 32, email: "prasad@tutorialspoint.com" }
          ];
+
+var db;
+var request = window.indexedDB.open("newDatabase", 1);
+
+request.onerror = function(event) {
+            console.log("error: ");
+         };
