@@ -34,3 +34,7 @@ request.onsuccess = function(event) {
             db = request.result;
             console.log("success: "+ db);
 };
+
+request.onupgradeneeded = function(event) {
+            var db = event.target.result;
+            var objectStore = db.createObjectStore("employee", {keyPath: "id"});
