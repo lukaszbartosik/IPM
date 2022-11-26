@@ -99,8 +99,6 @@
                         phoneNumber: phoneNumber,
                         email: email,
                         idNumber: idNumber,
-                        address: address,
-                        city: city,
                         postalCode: postalCode
                     }
                     let transaction = db.transaction(["customers"], "readwrite");
@@ -139,8 +137,6 @@
                                 cursor.value.phoneNumber.toLowerCase().includes(keyword.toLowerCase()) ||
                                 cursor.value.email.toLowerCase().includes(keyword.toLowerCase()) ||
                                 cursor.value.idNumber.toLowerCase().includes(keyword.toLowerCase()) ||
-                                cursor.value.address.toLowerCase().includes(keyword.toLowerCase()) ||
-                                cursor.value.city.toLowerCase().includes(keyword.toLowerCase()) ||
                                 cursor.value.postalCode.toLowerCase().includes(keyword.toLowerCase()))) {
                                 document.getElementById("customers-table-body").innerHTML +=
                                     "<tr><td>" + cursor.key + "</td><td>"
@@ -149,8 +145,6 @@
                                     + cursor.value.phoneNumber + "</td><td>"
                                     + cursor.value.email + "</td><td>"
                                     + cursor.value.idNumber + "</td><td>"
-                                    + cursor.value.address + "</td><td>"
-                                    + cursor.value.city + "</td><td>"
                                     + cursor.value.postalCode
                                     + "</td><td><button id=\"delButton\" value=\"" + cursor.key + "\">Usuń</button>"
                                     + "</td></tr>";
