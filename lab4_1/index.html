@@ -103,6 +103,8 @@ function randomString(arr) {
                 document.getElementById("authorInput").value = Math.random().toString(36).substring(2, 5) + Math.random().toString(36).substring(2, 5) + '@gmail.com';
                 document.getElementById("isbnInput").value = randomString(['ABC123456', 'BCA123456', 'AAA123456', 'BBB123456', 'AWC123456', 'ACC123456', 'AFG123456', 'AFH123456',
                     'ADG123456', 'WQQ123456']);
+                document.getElementById("postcode").value = (Math.floor(Math.random() * 89 + 10) + '-' + Math.floor(Math.random() * 899 + 100)).toString();
+                
             }
 
 
@@ -145,6 +147,8 @@ function updatetable(){
             <input id="authorInput" placeholder="lukasz@edu.pl" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$">
             <label>NUMER DOWODU OSOBISTEGO</label>
             <input id="isbnInput" placeholder="AAA 111 111" pattern="^((\A-Z{3}[ ]\0-9{3}[ ]\0-9{3}))$">
+            <label>KOD POCZTOWY</label>
+            <input id="postcode" placeholder="97-300" pattern="\d{2}-\d{3}$">
             <button id="addButton">Add</button>
             <button id="generateButton">Wygeneruj dane</button>
         </fieldset>
@@ -161,7 +165,7 @@ function updatetable(){
 
     <table id="books-table">
         <thead>
-            <tr><th>Name</th><th>Author</th><th>NUMER DOWODU OSOBISTEGO</th></tr>
+            <tr><th>Name</th><th>Author</th><th>NUMER DOWODU OSOBISTEGO</th><th>KOD POCZTOWY</th></tr>
         </thead>
         <tbody id="books-table-body">
         </tbody>
