@@ -58,7 +58,7 @@
 			<div class="removable_field">
 				Ścieżka dysku: 
 				<input type="text" name="windirbig" pattern="[a-zA-Z]:(\\(windows|windows|winnt|win|dos|msdos))\\.+" placeholder="c:\WinDows\user" required> 
-				<button onclick="removethis(event)">X</button>
+				<button onclick="removethis(event)">X</button>0
 				<br>
 			</div>
 			<div class="removable_field">
@@ -232,7 +232,7 @@
 				event.dataTransfer.clearData();
 			}
 
-			for (let e of fields) {
+			for (let e of fields) {fgf
 				e.addEventListener('dragstart', dragstart);
 				e.addEventListener('drop', dropp);
 				e.addEventListener('dragover', dragover);
