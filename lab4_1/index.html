@@ -1,251 +1,229 @@
-<html>
-	<head>
-		<style>
-			input:invalid {
-				border-color: red;
-			}
-			input:required:valid {
-				border-color: green;
-			}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Task 5</title>
+    <link rel="stylesheet" href="index.css">
+</head>
+<body onload="initDatabase()">
 
-			form > div >* {
-				margin-bottom: 5px;
-				padding: 5px;
-			}
-			.removable_field {
-				/* margin-bottom: 5px; */
-			}
-		</style>
-	</head>
-	<body>
-		<form>
-			<div class="removable_field">	
-				Email: 
-				<input type="email" name="email"placeholder="user@site.com" required>
-				<button onclick="removethis(event)">X</button>
-				<br>
-			</div>
-			<div class="removable_field">
-				Kod pocztowy: 
-				<input type="text" name="postal" pattern="\d\d-\d\d\d" title="2 cyfry myślnik i 3 cyfry" placeholder="12-345" required> 
-				<button onclick="removethis(event)">X</button>
-				<br>
-			</div>
-			<div class="removable_field">
-				Numer nip: 
-				<input type="text" name="nip" pattern="\d{3}-\d{3}-\d{2}-\d{2}" placeholder="123-456-32-18" required> 
-				<button onclick="removethis(event)">X</button>
-				<br>
-			</div>
-			<div class="removable_field">
-				Numer dowodu: 
-				<input type="text" name="dowod" pattern="[A-Z]{3}\d{6}" placeholder="ABA300000" required> 
-				<button onclick="removethis(event)">X</button>
-				<br>
-			</div>
-			<div class="removable_field">
-				Adres ipv4: 
-				<input type="text" name="ip" pattern="\b((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)(\.|$)){4}\b" placeholder="192.168.1.1" required> 
-				<button onclick="removethis(event)">X</button>
-				<br>
-			</div>
-			<div class="removable_field">
-				Strona www:
-				<input type="text" name="www" pattern="(https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|www\.[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9]+\.[^\s]{2,}|www\.[a-zA-Z0-9]+\.[^\s]{2,})" placeholder="www.example.com" required> 
-				<button onclick="removethis(event)">X</button>
-				<br>
-			</div>
-			<div class="removable_field">
-				Ścieżka dysku: 
-				<input type="text" name="windirbig" pattern="[a-zA-Z]:(\\(windows|windows|winnt|win|dos|msdos))\\.+" placeholder="c:\WinDows\user" required> 
-				<button onclick="removethis(event)">X</button>0
-				<br>
-			</div>
-			<div class="removable_field">
-				Ścieżka dysku: 
-				<input type="text" name="windir" pattern="[a-zA-Z]:(\\([Ww]indows|[Ww]innt|[Ww]in|[Dd]os|[Mm]sdos))\\.+" placeholder="c:\windows\user" required> 
-				<button onclick="removethis(event)">X</button>
-				<br>
-			</div>
-			<div class="removable_field">
-				Ścieżka do pliku w katalogu /etc: 
-				<input type="text" name="etcdir" pattern="\/etc(\/[a-zA-Z]+)+" placeholder="/etc/passwd" required> 
-				<button onclick="removethis(event)">X</button>
-				<br>
-			</div>
-			<div class="removable_field" ondragover="dragover(event)">
-				Adres ipv6:
-				<input type="text" name="ipv6addr" pattern="(([0-9a-fA-F]{1,4}:){7,7}[0-9a-fA-F]{1,4}|([0-9a-fA-F]{1,4}:){1,7}:|([0-9a-fA-F]{1,4}:){1,6}:[0-9a-fA-F]{1,4}|([0-9a-fA-F]{1,4}:){1,5}(:[0-9a-fA-F]{1,4}){1,2}|([0-9a-fA-F]{1,4}:){1,4}(:[0-9a-fA-F]{1,4}){1,3}|([0-9a-fA-F]{1,4}:){1,3}(:[0-9a-fA-F]{1,4}){1,4}|([0-9a-fA-F]{1,4}:){1,2}(:[0-9a-fA-F]{1,4}){1,5}|[0-9a-fA-F]{1,4}:((:[0-9a-fA-F]{1,4}){1,6})|:((:[0-9a-fA-F]{1,4}){1,7}|:)|fe80:(:[0-9a-fA-F]{0,4}){0,4}%[0-9a-zA-Z]{1,}|::(ffff(:0{1,4}){0,1}:){0,1}((25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9])\.){3,3}(25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9])|([0-9a-fA-F]{1,4}:){1,4}:((25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9])\.){3,3}(25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9]))" placeholder="::ffff:c000:0280" required> 
-				<button onclick="removethis(event)">X</button>
-				<br>
-			</div>
-			<div class="removable_field" draggable="true" id="phonenb" ondragstart="dragstart(event)">
-				Numer telefonu:
-				<input type="text" name="phonenb" pattern="([0-9]{9}|(([0-9]{3}(\s|-|\/){0,1}){3}))" placeholder="123 456 789" required> 
-				<button onclick="removethis(event)">X</button>
-				<br>
-			</div>
-		</form>
-		<button onclick="savedata()">save</button>
-		<button onclick="loaddata()">load</button>
-		<script>
-			var db;
-			window.onload = () => {
-				//Open Database
-				
-				if (!('indexedDB' in window)) {
-					console.log("no indexeddb");
-					return;
-				}
-				var idb = window.indexedDB;
-				var request = idb.open('test-db1', 3);
+<div class="form-style-6">
+    <form id="addForm">
+        <p>Dodaj klienta</p>
+        <div>
+            <label for="nameInput">Imię</label>
+            <input required type="text" id="nameInput">
+        </div>
+        <div>
+            <label for="surnameInput">Nazwisko</label>
+            <input required type="text" id="surnameInput">
+        </div>
+        <div>
+            <label for="phoneNumberInput">Numer telefonu</label>
+            <input required pattern="^(?:\(?\?)?(?:[-\.\(\)\s]*(\d)){9}\)?$" type="text" id="phoneNumberInput">
+        </div>
+        <div>
+            <label for="emailInput">Adres email</label>
+            <input required type="email" id="emailInput">
+        </div>
+        <div>
+            <label for="IDInput">Numer i seria dowodu</label>
+            <input required type="text" pattern="[A-Z]{3}[0-9]{6}" id="IDInput">
+        </div>
+        <div>
+            <label for="addressInput">Adres</label>
+            <input required type="text" id="addressInput">
+        </div>
+        <div>
+            <label for="cityInput">Miasto</label>
+            <input required type="text" id="cityInput">
+        </div>
+        <div>
+            <label for="postalCodeInput">Kod pocztowy</label>
+            <input required type="text" id="postalCodeInput" pattern="\d{2}-\d{3}">
+        </div>
 
-				request.onerror = event => {
-					console.log("Error happened: ", event);
-				}
+        <button id="addButton">Dodaj</button>
+    </form>
+</div>
 
-				request.onsuccess = event => {
-					db = event.target.result;
-					console.log("success");
-				}
+<div class="form-style-6">
+    <form id="searchForm">
+        <p>Wyszukaj</p>
+        <label for="keyword">Wpisz słowo kluczowe</label>
+        <input type="text" id="keyword">
+        <button id="searchButton">Wyszukaj</button>
+    </form>
+</div>
 
-				request.onupgradeneeded = event => {
-					db = event.target.result;
+<table id="customers-table" class="styled-table">
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Imię</th>
+        <th>Nazwisko</th>
+        <th>Numer telefonu</th>
+        <th>Email</th>
+        <th>Numer dowodu</th>
+        <th>Adres</th>
+        <th>Miasto</th>
+        <th>Kod pocztowy</th>
+    </tr>
+    </thead>
+    <tbody id="customers-table-body">
+    </tbody>
+</table>
+<script>
+    // In the following line, you should include the prefixes of implementations you want to test.
+    window.indexedDB = window.indexedDB || window.mozIndexedDB || window.webkitIndexedDB || window.msIndexedDB;
+    // DON'T use "var indexedDB = ..." if you're not in a function.
+    // Moreover, you may need references to some window.IDB* objects:
+    window.IDBTransaction = window.IDBTransaction || window.webkitIDBTransaction || window.msIDBTransaction || {READ_WRITE: "readwrite"}; // This line should only be needed if it is needed to support the object's constants for older browsers
+    window.IDBKeyRange = window.IDBKeyRange || window.webkitIDBKeyRange || window.msIDBKeyRange;
+    // (Mozilla has never prefixed these objects, so we don't need window.mozIDB*)
+    if (!window.indexedDB) {
+        console.log("Your browser doesn't support a stable version of IndexedDB. Such and such feature will not be available.");
+    }
 
-					var objectStore = db.createObjectStore("name", {keyPath: 'myKey'});
-					// {myKey: 1, json: ""}
-					objectStore.createIndex("json", "json", { unique: false});
+    function initDatabase() {
 
-					objectStore.transaction.oncomplete = event => {
-						var nameObjectStore = db.transaction("name", 'readwrite').objectStore('name');
-						const fields = ["email", "postal", "nip", "dowod", "ip", "www", "windirbig", "windir", "etcdir", "ipv6addr", "phonenb"];
-						var data = {}
-						for (var i of fields) {
-							data[i] = '';
-						}
-						nameObjectStore.add({myKey: "data", json: JSON.stringify(data)});
-					}
+        const request = window.indexedDB.open("MyTestDatabase", 3);
+        request.onerror = function (event) {
+            console.log("Error occurred during database setup");
+        };
+        request.onsuccess = function (event) {
+            db = event.target.result;
+            db.onerror = function (event) {
+                console.log("Error has occurred: " + event.target.errorCode);
+            };
+            updateTableBody();
+        };
+        request.onupgradeneeded = function (event) {
+            const db = event.target.result;
+            const objectStore = db.createObjectStore("customers", {keyPath: "id", autoIncrement: true});
+            objectStore.createIndex("name", "name", {unique: false});
+            objectStore.createIndex("surname", "surname", {unique: false});
+            objectStore.createIndex("phoneNumber", "phoneNumber", {unique: true});
+            objectStore.createIndex("email", "email", {unique: true});
+            objectStore.createIndex("idNumber", "idNumber", {unique: true});
+            objectStore.createIndex("address", "address", {unique: false});
+            objectStore.createIndex("city", "city", {unique: false});
+            objectStore.createIndex("postalCode", "postalCode", {unique: false});
+            objectStore.transaction.oncomplete = function (event) {
+            };
+        };
+    }
 
-					console.log("upgradee");
-				}
-			}
+    function updateTableBody() {
+        document.getElementById("customers-table-body").innerHTML = "";
+        const request = db.transaction("customers").objectStore("customers").openCursor();
+        request.onerror = function (event) {
+            console.log(event);
+        };
+        request.onsuccess = function (event) {
+            const cursor = event.target.result;
+            if (cursor) {
+                document.getElementById("customers-table-body").innerHTML += "<tr><td>" + cursor.key + "</td><td>"
+                    + cursor.value.name + "</td><td>"
+                    + cursor.value.surname + "</td><td>"
+                    + cursor.value.phoneNumber + "</td><td>"
+                    + cursor.value.email + "</td><td>"
+                    + cursor.value.idNumber + "</td><td>"
+                    + cursor.value.address + "</td><td>"
+                    + cursor.value.city + "</td><td>"
+                    + cursor.value.postalCode +
+                    "<button onclick='deleteRecord(\"" + cursor.key + "\")' style='margin-left: 10px' id=\"" + cursor.key + "\" >Usuń rekord</button>" +
+                    "</td></tr>";
 
-			function loaddata() {
-				var transaction = db.transaction(['name']);
-				var objectStore = transaction.objectStore('name');
-				var request = objectStore.get("data");
-				request.onerror = event => {
-					out.innerHTML = "error when getting data " + event.toString();
-				}
+                cursor.continue();
+            }
+        };
+    }
 
-				request.onsuccess = event => {
-					console.log("got data", request.result);
-					const fields = ["email", "postal", "nip", "dowod", "ip", "www", "windirbig", "windir", "etcdir", "ipv6addr", "phonenb"];
-					var queried_object = JSON.parse(request.result.json);
-					for (var i of fields) {
-						if (i in document.forms[0]) {
-							document.forms[0][i].value = queried_object[i];
-						}
-					}
-				}
+    document.getElementById('addButton').onclick = function (e) {
+        const name = document.getElementById('nameInput').value;
+        const surname = document.getElementById('surnameInput').value;
+        const phoneNumber = document.getElementById('phoneNumberInput').value;
+        const email = document.getElementById('emailInput').value;
+        const idNumber = document.getElementById('IDInput').value;
+        const address = document.getElementById('addressInput').value;
+        const city = document.getElementById('cityInput').value;
+        const postalCode = document.getElementById('postalCodeInput').value;
 
-				transaction.oncomplete = event => {
-					console.log("All done");
-				};
-			}
+        const customerEntry = {
+            name: name,
+            surname: surname,
+            phoneNumber: phoneNumber,
+            email: email,
+            idNumber: idNumber,
+            address: address,
+            city: city,
+            postalCode: postalCode
+        }
 
-			function savedata() {
-				const fields = ["email", "postal", "nip", "dowod", "ip", "www", "windirbig", "windir", "etcdir", "ipv6addr", "phonenb"];
-				var data = {}
-				for (var i of fields) {
-					data[i] = document.forms[0][i].value;
-				}
-				console.log("data", data);
-				
-				var transaction = db.transaction(['name'], 'readwrite');
-				var objectStore = transaction.objectStore('name');
-				var request = objectStore.get("data");
+        let transaction = db.transaction(["customers"], "readwrite");
+        transaction.oncomplete = function (event) {
+            console.log("Transaction successful");
+        };
+        transaction.onerror = function (event) {
+            console.log("Error during transaction");
+        };
+        const customersObjectStore = transaction.objectStore("customers");
+        const request = customersObjectStore.add(customerEntry);
+        request.onsuccess = function (event) {
+            console.log("Customer entry added to database!");
+        };
+        updateTableBody();
+    }
 
-				request.onerror = event => {
-					out.innerHTML = "error when getting data " + event.toString();
-				}
+    document.getElementById('searchButton').onclick = function (e) {
+        let keyword = document.getElementById('keyword').value;
+        if (keyword == null) {
+            keyword = "";
+        }
+        document.getElementById("customers-table-body").innerHTML = "";
+        const request = db.transaction("customers").objectStore("customers").openCursor();
+        request.onerror = function (event) {
+            console.log(event);
+        };
+        request.onsuccess = function (event) {
+            const cursor = event.target.result;
+            if (cursor) {
+                if ((
+                    cursor.value.name.toLowerCase().includes(keyword.toLowerCase()) ||
+                    cursor.value.surname.toLowerCase().includes(keyword.toLowerCase()) ||
+                    cursor.value.phoneNumber.toLowerCase().includes(keyword.toLowerCase()) ||
+                    cursor.value.email.toLowerCase().includes(keyword.toLowerCase()) ||
+                    cursor.value.idNumber.toLowerCase().includes(keyword.toLowerCase()) ||
+                    cursor.value.address.toLowerCase().includes(keyword.toLowerCase()) ||
+                    cursor.value.city.toLowerCase().includes(keyword.toLowerCase()) ||
+                    cursor.value.postalCode.toLowerCase().includes(keyword.toLowerCase()))) {
+                    console.log("addind")
+                    document.getElementById("customers-table-body").innerHTML += "<tr><td>" + cursor.key + "</td><td>"
+                        + cursor.value.name + "</td><td>"
+                        + cursor.value.surname + "</td><td>"
+                        + cursor.value.phoneNumber + "</td><td>"
+                        + cursor.value.email + "</td><td>"
+                        + cursor.value.idNumber + "</td><td>"
+                        + cursor.value.address + "</td><td>"
+                        + cursor.value.city + "</td><td>"
+                        + cursor.value.postalCode +
+                        "<button onclick='deleteRecord(\"" + cursor.key + "\")' style='margin-left: 10px' id=\"" + cursor.key + "\" >Usuń rekord</button>" +
+                        "</td></tr>";
 
-				request.onsuccess = event => {
-					var stored_data = event.target.result;
+                    cursor.continue();
+                }
+            }
+        };
+    }
 
-					console.log("got stored_data: ", stored_data);
-
-					stored_data.json = JSON.stringify(data);
-
-					var requestUpdate = objectStore.put(stored_data);
-
-					requestUpdate.onerror = event => {
-						out.innerHTML = "error when updating data " + event.toString();
-					}
-
-					requestUpdate.onsuccess = event => {
-						console.log("updated data successfully");
-					}
-				}
-
-				transaction.oncomplete = event => {
-					console.log("All done");
-				};
-			}
-
-			var fields = document.getElementsByClassName('removable_field');
-			// console.log(fields);
-
-			var draggableelement = null;
-
-			function dragstart(event) {
-				event.dataTransfer.setData('text/plain', event.target.id);
-				
-				event
-					.target
-					.style
-					.backgroundColor = 'yellow';
-
-				draggableelement = event.target;
-			}
-			
-			function dragover(event) {
-				event.preventDefault();
-				event.target.style.background = 'pink';
-			}
-			function dragleave(event) {
-				event.preventDefault();
-				event.target.style.background = 'none';
-			}
-
-			function dropp(event) {
-    			event.preventDefault();
-				console.log("dropped");
-				let dropzone = event.target;
-				event.target.style.background = 'none';
-				draggableelement.style.background = 'none';
-				var temp = event.target.innerHTML + "";
-				document.forms[0].insertBefore(draggableelement, event.target.nextSibling);
-				document.forms[0].insertBefore(event.target.nextSibling, draggableelement);
-				// draggableelement.innerHTML = temp;
-				draggableelement = null;
-				event.dataTransfer.clearData();
-			}
-
-			for (let e of fields) {
-				e.addEventListener('dragstart', dragstart);
-				e.addEventListener('drop', dropp);
-				e.addEventListener('dragover', dragover);
-				e.addEventListener('dragleave', dragleave);
-				e.setAttribute('draggable', true);
-				// console.log(e.addEventListener('click', () => {console.log('test')}));
-			}
+    function deleteRecord(idToDelete) {
+        const request = db.transaction(["customers"], "readwrite").objectStore("customers")
+            .delete(parseInt(idToDelete));
+        updateTableBody();
+    }
 
 
-
-			function removethis(e) {
-				e.target.parentElement.remove();
-			}
-		</script>
-	</body>
+</script>
+</body>
 </html>
