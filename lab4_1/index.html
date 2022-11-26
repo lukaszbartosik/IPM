@@ -37,8 +37,6 @@
                 objectStore.createIndex("phoneNumber", "phoneNumber", {unique: true});
                 objectStore.createIndex("email", "email", {unique: true});
                 objectStore.createIndex("idNumber", "idNumber", {unique: true});
-                objectStore.createIndex("address", "address", {unique: false});
-                objectStore.createIndex("city", "city", {unique: false});
                 objectStore.createIndex("postalCode", "postalCode", {unique: false});
                 objectStore.transaction.oncomplete = function (event) {
                 };
@@ -52,8 +50,6 @@
                 const phoneNumber = document.getElementById('phoneNumberInput').value;
                 const email = document.getElementById('emailInput').value;
                 const idNumber = document.getElementById('IDInput').value;
-                const address = document.getElementById('addressInput').value;
-                const city = document.getElementById('cityInput').value;
                 const postalCode = document.getElementById('postalCodeInput').value;
 
                 //Edit?
@@ -70,8 +66,6 @@
                                 phoneNumber: phoneNumber,
                                 email: email,
                                 idNumber: idNumber,
-                                address: address,
-                                city: city,
                                 postalCode: postalCode
                             }
                             let idToDelete = customerID;
