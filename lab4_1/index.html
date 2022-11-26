@@ -1,259 +1,171 @@
 <!DOCTYPE html>
 <head>
-    <title>Task 6</title>
-    <meta charset="UTF-8">
-    <link rel="stylesheet" href="index.css">
     <script>
+          window.indexedDB = window.indexedDB || window.mozIndexedDB || window.webkitIndexedDB || window.msIndexedDB;
 
-        // In the following line, you should include the prefixes of implementations you want to test
-        window.indexedDB = window.indexedDB || window.mozIndexedDB || window.webkitIndexedDB || window.msIndexedDB;
-        // DON'T use "var indexedDB = ..." if you're not in a function.
-        // Moreover, you may need references to some window.IDB* objects:
-        window.IDBTransaction = window.IDBTransaction || window.webkitIDBTransaction || window.msIDBTransaction || {READ_WRITE: "readwrite"}; // This line should only be needed if it is needed to support the object's constants for older browsers
-        window.IDBKeyRange = window.IDBKeyRange || window.webkitIDBKeyRange || window.msIDBKeyRange;
-        // (Mozilla has never prefixed these objects, so we don't need window.mozIDB*)
-        if (!window.indexedDB) {
-            console.log("Your browser doesn't support a stable version of IndexedDB. Such and such feature will not be available.");
-        }
+window.IDBTransaction = window.IDBTransaction || window.webkitIDBTransaction || window.msIDBTransaction || {READ_WRITE: "readwrite"};
 
-        function initDatabase() {
-            let request = window.indexedDB.open("MyTestDatabase", 3);
-            request.onerror = function (event) {
-                console.log("Error occurred during database setup");
-            };
-            request.onsuccess = function (event) {
-                db = event.target.result;
-                db.onerror = function (event) {
-                    console.log("Error has occurred: " + event.target.errorCode);
-                };
-                updateTableBody();
-            };
+window.IDBKeyRange = window.IDBKeyRange || window.webkitIDBKeyRange || window.msIDBKeyRange;
 
-            request.onupgradeneeded = function (event) {
-                let db = event.target.result;
-                let objectStore = db.createObjectStore("customers", {keyPath: "id", autoIncrement: true});
-                objectStore.createIndex("name", "name", {unique: false});
-                objectStore.createIndex("surname", "surname", {unique: false});
-                objectStore.createIndex("phoneNumber", "phoneNumber", {unique: true});
-                objectStore.createIndex("email", "email", {unique: true});
-                objectStore.createIndex("idNumber", "idNumber", {unique: true});
-                objectStore.createIndex("postalCode", "postalCode", {unique: false});
-                objectStore.transaction.oncomplete = function (event) {
-                };
-            };
 
-            document.getElementById('addClientForm').onsubmit = function (e) {
-                e.preventDefault();
-                let customerID = document.getElementById('recordIDinput').value;
-                const name = document.getElementById('nameInput').value;
-                const surname = document.getElementById('surnameInput').value;
-                const phoneNumber = document.getElementById('phoneNumberInput').value;
-                const email = document.getElementById('emailInput').value;
-                const idNumber = document.getElementById('IDInput').value;
-                const postalCode = document.getElementById('postalCodeInput').value;
+if (!window.indexedDB) {
+  window.alert("Your browser doesn't support a stable version of IndexedDB. Such and such feature will not be available.");
+}
 
-                
-                if (customerID !== "") {
-                    customerID = parseInt(customerID);
-                    let transaction = db.transaction(["customers"], "readwrite");
-                    transaction.objectStore("customers").get(customerID).onsuccess = function (event) {
-                        let cursor = event.target.result;
-                        if (cursor) {
-                            const customerEntry = {
-                                id: customerID,
-                                name: name,
-                                surname: surname,
-                                phoneNumber: phoneNumber,
-                                email: email,
-                                idNumber: idNumber,
-                                postalCode: postalCode
-                            }
-                            let idToDelete = customerID;
-                            let transaction = db.transaction(["customers"], "readwrite");
-                            request = transaction.objectStore("customers").delete(idToDelete);
-                            transaction = db.transaction(["customers"], "readwrite");
-                            transaction.oncomplete = function (event) {
-                            };
-                            transaction.onerror = function (event) {
-                                console.log(event);
-                            };
-                            let customersObjectStore = transaction.objectStore("customers");
-                            request = customersObjectStore.add(customerEntry);
-                            request.onsuccess = function (event) {
-                                updateTableBody();
-                            };
-                        } else {
-                            console.log("ID doest not exist");
-                        }
-                    };
-                } else {
-                    const customerEntry = {
-                        name: name,
-                        surname: surname,
-                        phoneNumber: phoneNumber,
-                        email: email,
-                        idNumber: idNumber,
-                        postalCode: postalCode
-                    }
-                    let transaction = db.transaction(["customers"], "readwrite");
-                    transaction.oncomplete = function (event) {
-                    };
-                    transaction.onerror = function (event) {
-                        console.log(event);
-                    };
-                    let customersObjectStore = transaction.objectStore("customers");
-                    let request = customersObjectStore.add(customerEntry);
-                    request.onsuccess = function (event) {
-                    };
-                }
-                updateTableBody();
-            }
+function init(){
 
-            document.getElementById('searchButton').onclick = function (e) {
-                let word = document.getElementById('searchInput').value;
-                if (word == null) {
-                    word = "";
-                }
-                let words = word.split(' ');
-                document.getElementById("customers-table-body").innerHTML = "";
-                const request = db.transaction("customers").objectStore("customers").openCursor();
-                request.onerror = function (event) {
-                    console.log(event);
-                };
-                request.onsuccess = function (event) {
-                    cursor = event.target.result;
+var request = window.indexedDB.open("MyTestDatabase", 3);
 
-                    if (cursor) {
-                        words.forEach(function (keyword) {
-                            if ((
-                                cursor.value.name.toLowerCase().includes(keyword.toLowerCase()) ||
-                                cursor.value.surname.toLowerCase().includes(keyword.toLowerCase()) ||
-                                cursor.value.phoneNumber.toLowerCase().includes(keyword.toLowerCase()) ||
-                                cursor.value.email.toLowerCase().includes(keyword.toLowerCase()) ||
-                                cursor.value.idNumber.toLowerCase().includes(keyword.toLowerCase()) ||
-                                cursor.value.postalCode.toLowerCase().includes(keyword.toLowerCase()))) {
-                                document.getElementById("customers-table-body").innerHTML +=
-                                    "<tr><td>" + cursor.key + "</td><td>"
-                                    + cursor.value.name + "</td><td>"
-                                    + cursor.value.surname + "</td><td>"
-                                    + cursor.value.phoneNumber + "</td><td>"
-                                    + cursor.value.email + "</td><td>"
-                                    + cursor.value.idNumber + "</td><td>"
-                                    + cursor.value.postalCode
-                                    + "</td><td><button id=\"delButton\" value=\"" + cursor.key + "\">Usuń</button>"
-                                    + "</td></tr>";
-                                document.getElementById('delButton').onclick = function (e) {
-                                    let idToDelete = parseInt(document.getElementById('delButton').value);
-                                    let request = db.transaction(["customers"], "readwrite").objectStore("customers").delete(idToDelete);
-                                    document.getElementById('searchInput').value = "";
-                                    updateTableBody();
-                                }
-                            }
-                            cursor.continue();
-                        });
+request.onerror = function(event) {
 
-                    }
-                };
-            }
+  alert("Error faced while opening database");
+};
+request.onsuccess = function(event) {
 
-            function randomString(arr) {
+  db = event.target.result;
+  
+
+  db.onerror = function(event) {
+
+    alert("Database error: " + event.target.errorCode);
+  };
+
+};
+
+request.onupgradeneeded = function(event) { 
+
+  var db = event.target.result;
+
+  var objectStore = db.createObjectStore("books", { keyPath: "isbn" });
+
+  objectStore.createIndex("name", "name", {unique:false});
+
+  objectStore.createIndex("author", "author", {unique:false});
+
+  objectStore.transaction.oncomplete = function(event) {
+    
+  }
+};
+
+document.getElementById('addButton').onclick = function(e) {
+
+  var bname = document.getElementById('nameInput').value;
+  var bauthor = document.getElementById('authorInput').value;
+  var id = document.getElementById('isbnInput').value;
+  
+  const book_item = {
+    name: bname,
+    author: bauthor,
+    isbn: id
+  }
+
+  var transaction = db.transaction(["books"], "readwrite");
+
+  transaction.oncomplete = function(event) {
+    console.log("all done with transaction");
+  };
+
+  transaction.onerror = function(event){
+    console.dir(event);
+  };
+
+  var booksObjectStore = transaction.objectStore("books");
+  var request = booksObjectStore.add(book_item);
+
+  request.onsuccess = function(event){
+    console.log("added item");
+  };
+
+  updatetable();
+
+};
+
+document.getElementById('delButton').onclick = function(e){
+
+  var isbn_del = document.getElementById('isbnDelInput').value;
+
+  var request = db.transaction(["books"], "readwrite").objectStore("books").delete(isbn_del);
+
+  request.onsuccess = function(event){
+    console.log(isbn_del+" deleted");
+  };
+
+  updatetable();
+};
+
+function randomString(arr) {
                 let randomIndex = Math.floor(Math.random() * arr.length);
                 return arr[randomIndex];
             }
 
             document.getElementById('generateButton').onclick = function (e) {
                 document.getElementById("nameInput").value = randomString(['Bartosz', 'Maciej', 'Jan', 'Paweł']);
-                document.getElementById("surnameInput").value = randomString(['Kowalski', 'Nowak', 'Cichy', 'Wawelski']);
-                document.getElementById("emailInput").value = Math.random().toString(36).substring(2, 5) + Math.random().toString(36).substring(2, 5) + '@gmail.com';
-                document.getElementById("postalCodeInput").value = (Math.floor(Math.random() * 89 + 10) + '-' + Math.floor(Math.random() * 899 + 100)).toString();
-                document.getElementById("phoneNumberInput").value = Math.floor(Math.random() * 899 + 100).toString() + Math.floor(Math.random() * 899 + 100).toString() + Math.floor(Math.random() * 899 + 100).toString();
-                document.getElementById("IDInput").value = randomString(['ABC123456', 'BCA123456', 'AAA123456', 'BBB123456', 'AWC123456', 'ACC123456', 'AFG123456', 'AFH123456',
+                document.getElementById("authorInput").value = Math.random().toString(36).substring(2, 5) + Math.random().toString(36).substring(2, 5) + '@gmail.com';
+                document.getElementById("isbnInput").value = randomString(['ABC123456', 'BCA123456', 'AAA123456', 'BBB123456', 'AWC123456', 'ACC123456', 'AFG123456', 'AFH123456',
                     'ADG123456', 'WQQ123456']);
             }
 
 
-            function updateTableBody() {
-                document.getElementById("customers-table-body").innerHTML = "";
-                let request = db.transaction("customers").objectStore("customers").openCursor();
-                request.onerror = function (event) {
-                    console.log(event);
-                };
-                request.onsuccess = function (event) {
-                    cursor = event.target.result;
-                    if (cursor) {
-                        document.getElementById("customers-table-body").innerHTML +=
-                            "<tr><td>" + cursor.key + "</td><td>"
-                            + cursor.value.name + "</td><td>"
-                            + cursor.value.surname + "</td><td>"
-                            + cursor.value.phoneNumber + "</td><td>"
-                            + cursor.value.email + "</td><td>"
-                            + cursor.value.idNumber + "</td><td>"
-                            + cursor.value.postalCode
-                            + "</td><td><button id=\"delButton\" value=\"" + cursor.key + "\">Usuń</button>"
-                            + "</td></tr>";
-                        document.getElementById('delButton').onclick = function (e) {
-                            let idToDelete = parseInt(document.getElementById('delButton').value);
-                            let request = db.transaction(["customers"], "readwrite").objectStore("customers").delete(idToDelete);
-                            document.getElementById('searchInput').value = "";
-                            updateTableBody();
-                        }
-                        cursor.continue();
-                    }
-                    
-                }
-            }
-        }
+function updatetable(){
 
+  document.getElementById("books-table-body").innerHTML = "";
+
+  var request = db.transaction("books").objectStore("books").openCursor();
+
+  request.onerror = function(event){
+    console.dir(event);
+  };
+
+  request.onsuccess = function(event){
+
+    cursor = event.target.result;
+
+    if(cursor) {
+      document.getElementById("books-table-body").innerHTML += "<tr><td>" + cursor.value.name + "</td><td>"
+        + cursor.value.author + "</td><td>" + cursor.key + "</td></tr>";
+
+        cursor.continue();
+    }
+  };
+}
+}
     </script>
 </head>
 
-<body onload="initDatabase()">
-<div class="form-style-6">
-    <form id="addClientForm">
-        <div>
-            <label for="nameInput">Imię</label>
-            <input required type="text" id="nameInput">
-        </div>
-        <div>
-            <label for="surnameInput">Nazwisko</label>
-            <input required type="text" id="surnameInput">
-        </div>
-        <div>
-            <label for="phoneNumberInput">Numer telefonu</label>
-            <input required pattern="^(?:\(?\?)?(?:[-\.\(\)\s]*(\d)){9}\)?$" type="text" id="phoneNumberInput">
-        </div>
-        <div>
-            <label for="emailInput">Adres email</label>
-            <input required type="email" id="emailInput">
-        </div>
-        <div>
-            <label for="IDInput">Numer i seria dowodu</label>
-            <input required type="text" pattern="[A-Z]{3}[0-9]{6}" id="IDInput">
-        </div>
-        <div>
-            <label for="postalCodeInput">Kod pocztowy</label>
-            <input required type="text" id="postalCodeInput" pattern="\d{2}-\d{3}">
-        </div>
-        <button id="generateButton">Wygeneruj dane</button>
-        <button type="submit" id="addButton">Dodaj</button>
-    </form>
-</div>
+<body onload="init()">
+  
+    <h1>IPM LAB4</h1>
 
+    <p>
+        <fieldset id="addForm">
+            <legend>Add item</legend>
+            <label>NAME</label>
+            <input id="nameInput" placeholder="Jan Kowalski">
+            <label>EMAIL</label>
+            <input id="authorInput" placeholder="lukasz@edu.pl" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$">
+            <label>NUMER DOWODU OSOBISTEGO</label>
+            <input id="isbnInput" placeholder="AAA 111 111" pattern="^((\A-Z{3}[ ]\0-9{3}[ ]\0-9{3}))$">
+            <button id="addButton">Add</button>
+            <button id="generateButton">Wygeneruj dane</button>
+        </fieldset>
+    </p>
 
-<table id="customers-table" class="styled-table">
-    <thead>
-    <tr>
-        <th>ID</th>
-        <th>Imię</th>
-        <th>Nazwisko</th>
-        <th>Numer telefonu</th>
-        <th>Email</th>
-        <th>Numer dowodu</th>
-        <th>Kod pocztowy</th>
-    </tr>
-    </thead>
-    <tbody id="customers-table-body">
-    </tbody>
-</table>
+    <p>
+      <fieldset id="deleteForm">
+        <legend>Delete item</legend>
+        <label>NUMER DOWODU OSOBISTEGO</label>
+        <input id="isbnDelInput">
+        <button id="delButton">Delete</button>
+      </fieldset>
+    </p>
+
+    <table id="books-table">
+        <thead>
+            <tr><th>Name</th><th>Author</th><th>NUMER DOWODU OSOBISTEGO</th></tr>
+        </thead>
+        <tbody id="books-table-body">
+        </tbody>
+    </table>
+
 </body>
 </html>
