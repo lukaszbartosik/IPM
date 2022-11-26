@@ -52,7 +52,7 @@
                 const idNumber = document.getElementById('IDInput').value;
                 const postalCode = document.getElementById('postalCodeInput').value;
 
-                //Edit?
+                
                 if (customerID !== "") {
                     customerID = parseInt(customerID);
                     let transaction = db.transaction(["customers"], "readwrite");
@@ -197,8 +197,9 @@
                             document.getElementById('searchInput').value = "";
                             updateTableBody();
                         }
+                        cursor.continue();
                     }
-                    cursor.continue();
+                    
                 }
             }
         }
