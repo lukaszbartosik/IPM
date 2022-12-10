@@ -87,7 +87,7 @@
                     <br><br>
                 </form>
             </li>
-            <li class="element" draggable="true" id="item"><button class="button">X</button> 
+            <li class="element" draggable="true" id="item">
                 <form>
                     <label for="phone">Podaj telefon:</label>
                     <input required type="tel" type="phone" id="phone" name="phone" placeholder="492-492-492" pattern="[0-9]{3}-[0-9]{3}-[0-9]{3}">
@@ -132,7 +132,7 @@ var border_style = 'solid 2px red';
 
 var database_var = 'customerDB';
 var table_var = 'clients';
-
+/*
 //ADD EVENT TO ITEM's BUTTON (REMOVING)
 list.addEventListener('click', function(e){
     if(e.target && e.target.nodeName == "BUTTON") {
@@ -140,7 +140,7 @@ list.addEventListener('click', function(e){
     }
 });
 
-
+*/
   
 //DRAG START EVENT, INITIALIZE VAR draggin WITH SOURCE OF EVENT
 document.addEventListener('dragstart', function(event) {
