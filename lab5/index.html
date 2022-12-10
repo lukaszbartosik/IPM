@@ -7,7 +7,7 @@
     <br><br>
     <form>
         <ol id="list">
-            <li class="element" draggable="true" id="item"><button class="button">X</button> 
+            <li class="element" id="item"><button class="button"></button> 
                 <form>
                     <label for="email">Podaj email:</label>
                     <input required type="email" type="mail" id="email" name="email" placeholder="abcd@gmail.com" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$">
@@ -292,23 +292,22 @@ function exampleText() {
   var zipcode = document.getElementById('zipcode').value = (Math.floor(Math.random() * 89 + 10) + '-' + Math.floor(Math.random() * 899 + 100)).toString();
   var nip = document.getElementById('nip').value = randomString(["100-10-20-200", '200-60-80-700', '897-87-52-725', '897-85-78-897']);
   var dowod = document.getElementById('dowod').value = randomString(['ABC123456', 'BCA123456', 'AAA123456', 'BBB123456', 'AWC123456', 'ACC123456', 'AFG123456', 'AFH123456','ADG123456', 'WQQ123456']);
-  var ip4 = document.getElementById('ip4');
-  var www = document.getElementById('www');
+  var ip4 = document.getElementById('ip4').value = randomString(['192.168.1.1','192.168.1.2','192.168.1.3','192.168.1.4'])
+  var www = document.getElementById('www').value = randomString(['www.google.com', 'www.politechnika.pl', 'www.onet.pl', 'www.strona.com']);
   var diskA = document.getElementById('diskA');
   var diskB = document.getElementById('diskB');
   var ip6 = document.getElementById('ip6');
   var catalog = document.getElementById('catalog');
   var phone = document.getElementById('phone').value = Math.floor(Math.random() * 899 + 100).toString() + Math.floor(Math.random() * 899 + 100).toString() + Math.floor(Math.random() * 899 + 100).toString();
 
-  nip.value = "100-10-20-200";
-  dowod.value = "ABC 123456";
+
   ip4.value = "192.168.1.1";
-  www.value = "www.google.com";
+
   diskA.value = 'c:\\windows\\temp';
   diskB.value = "C:\\Windows\\temp";
   catalog.value = "/etc/passwd";
   ip6.value = "2001:0db8:85a3:0000:0000:8a2e:0370:7334";
-  phone.value = "492-492-492";
+
 
 }
 
