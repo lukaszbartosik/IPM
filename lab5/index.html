@@ -1,339 +1,334 @@
-<html>
-	<head>
-		<style>
-			input:invalid {
-				border-color: red;
-			}
-			input:required:valid {
-				border-color: green;
-			}
+<!DOCTYPE html>
+<head>
+    <title>Task7</title>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="index.css">
+    <script>
 
-			form > div >* {
-				margin-bottom: 5px;
-				padding: 5px;
-			}
-			.removable_field {
-				/* margin-bottom: 5px; */
-			}
+        // In the following line, you should include the prefixes of implementations you want to test.
+        window.indexedDB = window.indexedDB || window.mozIndexedDB || window.webkitIndexedDB || window.msIndexedDB;
+        // DON'T use "var indexedDB = ..." if you're not in a function.
+        // Moreover, you may need references to some window.IDB* objects:
+        window.IDBTransaction = window.IDBTransaction || window.webkitIDBTransaction || window.msIDBTransaction || {READ_WRITE: "readwrite"}; // This line should only be needed if it is needed to support the object's constants for older browsers
+        window.IDBKeyRange = window.IDBKeyRange || window.webkitIDBKeyRange || window.msIDBKeyRange;
+        // (Mozilla has never prefixed these objects, so we don't need window.mozIDB*)
+        if (!window.indexedDB) {
+            console.log("Your browser doesn't support a stable version of IndexedDB. Such and such feature will not be available.");
+        }
 
-			#saved_users > ul > li > span:active {
-				text-decoration: none;
-				background: rgb(100, 57, 52);
-			}
+        function initDatabase() {
+            let request = window.indexedDB.open("MyTestDatabase", 3);
+            request.onerror = function (event) {
+                console.log("Error occurred during database setup");
+            };
+            request.onsuccess = function (event) {
+                db = event.target.result;
+                db.onerror = function (event) {
+                    console.log("Error has occurred: " + event.target.errorCode);
+                };
+                updateTableBody();
+            };
 
-			#saved_users > ul > li > span:hover {
-				text-decoration: underline;
-				cursor: pointer;
-				background: lightsalmon;
-			}
+            request.onupgradeneeded = function (event) {
+                let db = event.target.result;
+                let objectStore = db.createObjectStore("customers", {keyPath: "id", autoIncrement: true});
+                objectStore.createIndex("name", "name", {unique: false});
+                objectStore.createIndex("surname", "surname", {unique: false});
+                objectStore.createIndex("phoneNumber", "phoneNumber", {unique: true});
+                objectStore.createIndex("email", "email", {unique: true});
+                objectStore.createIndex("idNumber", "idNumber", {unique: true});
+                objectStore.createIndex("address", "address", {unique: false});
+                objectStore.createIndex("city", "city", {unique: false});
+                objectStore.createIndex("postalCode", "postalCode", {unique: false});
+                objectStore.transaction.oncomplete = function (event) {
+                };
+            };
 
-			#saved_users > ul > li > span{
-				/* margin: 0px; */
-				padding: 5px;
-			}
+            document.getElementById('addClientForm').onsubmit = function (e) {
+                e.preventDefault();
+                let customerID = document.getElementById('recordIDinput').value;
+                const name = document.getElementById('nameInput').value;
+                const surname = document.getElementById('surnameInput').value;
+                const phoneNumber = document.getElementById('phoneNumberInput').value;
+                const email = document.getElementById('emailInput').value;
+                const idNumber = document.getElementById('IDInput').value;
+                const address = document.getElementById('addressInput').value;
+                const city = document.getElementById('cityInput').value;
+                const postalCode = document.getElementById('postalCodeInput').value;
 
-			#saved_users > ul > li {
-				margin: 5px;
-			}
-		</style>
-		<script src="../genData.js" type="text/javascript"></script>
-	</head>
-	<body>
-		<form>
-			<div class="removable_field">	
-				Email: 
-				<input type="email" name="email"placeholder="user@site.com" required>
-				<button onclick="removethis(event)">X</button>
-				<br>
-			</div>
-			<div class="removable_field">
-				Kod pocztowy: 
-				<input type="text" name="postal" pattern="\d\d-\d\d\d" title="2 cyfry myślnik i 3 cyfry" placeholder="12-345" required> 
-				<button onclick="removethis(event)">X</button>
-				<br>
-			</div>
-			<div class="removable_field">
-				Numer nip: 
-				<input type="text" name="nip" pattern="\d{3}-\d{3}-\d{2}-\d{2}" placeholder="123-456-32-18" required> 
-				<button onclick="removethis(event)">X</button>
-				<br>
-			</div>
-			<div class="removable_field">
-				Numer dowodu: 
-				<input type="text" name="dowod" pattern="[A-Z]{3}\d{6}" placeholder="ABA300000" required> 
-				<button onclick="removethis(event)">X</button>
-				<br>
-			</div>
-			<div class="removable_field">
-				Adres ipv4: 
-				<input type="text" name="ip" pattern="\b((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)(\.|$)){4}\b" placeholder="192.168.1.1" required> 
-				<button onclick="removethis(event)">X</button>
-				<br>
-			</div>
-			<div class="removable_field">
-				Strona www:
-				<input type="text" name="www" pattern="(https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|www\.[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9]+\.[^\s]{2,}|www\.[a-zA-Z0-9]+\.[^\s]{2,})" placeholder="www.example.com" required> 
-				<button onclick="removethis(event)">X</button>
-				<br>
-			</div>
-			<div class="removable_field">
-				Ścieżka dysku: 
-				<input type="text" name="windirbig" pattern="[a-zA-Z]:(\\(windows|windows|winnt|win|dos|msdos))\\.+" placeholder="c:\WinDows\user" required> 
-				<button onclick="removethis(event)">X</button>
-				<br>
-			</div>
-			<div class="removable_field">
-				Ścieżka dysku: 
-				<input type="text" name="windir" pattern="[a-zA-Z]:(\\([Ww]indows|[Ww]innt|[Ww]in|[Dd]os|[Mm]sdos))\\.+" placeholder="c:\windows\user" required> 
-				<button onclick="removethis(event)">X</button>
-				<br>
-			</div>
-			<div class="removable_field">
-				Ścieżka do pliku w katalogu /etc: 
-				<input type="text" name="etcdir" pattern="\/etc(\/[a-zA-Z]+)+" placeholder="/etc/passwd" required> 
-				<button onclick="removethis(event)">X</button>
-				<br>
-			</div>
-			<div class="removable_field" ondragover="dragover(event)">
-				Adres ipv6:
-				<input type="text" name="ipv6addr" pattern="(([0-9a-fA-F]{1,4}:){7,7}[0-9a-fA-F]{1,4}|([0-9a-fA-F]{1,4}:){1,7}:|([0-9a-fA-F]{1,4}:){1,6}:[0-9a-fA-F]{1,4}|([0-9a-fA-F]{1,4}:){1,5}(:[0-9a-fA-F]{1,4}){1,2}|([0-9a-fA-F]{1,4}:){1,4}(:[0-9a-fA-F]{1,4}){1,3}|([0-9a-fA-F]{1,4}:){1,3}(:[0-9a-fA-F]{1,4}){1,4}|([0-9a-fA-F]{1,4}:){1,2}(:[0-9a-fA-F]{1,4}){1,5}|[0-9a-fA-F]{1,4}:((:[0-9a-fA-F]{1,4}){1,6})|:((:[0-9a-fA-F]{1,4}){1,7}|:)|fe80:(:[0-9a-fA-F]{0,4}){0,4}%[0-9a-zA-Z]{1,}|::(ffff(:0{1,4}){0,1}:){0,1}((25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9])\.){3,3}(25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9])|([0-9a-fA-F]{1,4}:){1,4}:((25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9])\.){3,3}(25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9]))" placeholder="::ffff:c000:0280" required> 
-				<button onclick="removethis(event)">X</button>
-				<br>
-			</div>
-			<div class="removable_field" draggable="true" id="phonenb" ondragstart="dragstart(event)">
-				Numer telefonu:
-				<input type="text" name="phonenb" pattern="(\d{9}|((\d{3}(\s|-|\/){0,1}){3}))" placeholder="123 456 789" required> 
-				<button onclick="removethis(event)">X</button>
-				<br>
-			</div>
-		</form>
-		<button onclick="savedata()">save</button>
-		<button onclick="genData()">Generate data</button>
-		<!-- <button onclick="loaddata()">load</button> -->
-		<div id="saved_users"></div>
-		<script>
-			var db;
-			window.onload = () => {
-				//Open Database
-				
-				if (!('indexedDB' in window)) {
-					console.log("no indexeddb");
-					return;
-				}
-				var idb = window.indexedDB;
-				var request = idb.open('test-db1', 3);
+                //Edit?
+                if (customerID !== "") {
+                    customerID = parseInt(customerID);
+                    let transaction = db.transaction(["customers"], "readwrite");
+                    transaction.objectStore("customers").get(customerID).onsuccess = function (event) {
+                        let cursor = event.target.result;
+                        if (cursor) {
+                            const customerEntry = {
+                                id: customerID,
+                                name: name,
+                                surname: surname,
+                                phoneNumber: phoneNumber,
+                                email: email,
+                                idNumber: idNumber,
+                                address: address,
+                                city: city,
+                                postalCode: postalCode
+                            }
+                            let idToDelete = customerID;
+                            let transaction = db.transaction(["customers"], "readwrite");
+                            request = transaction.objectStore("customers").delete(idToDelete);
+                            transaction = db.transaction(["customers"], "readwrite");
+                            transaction.oncomplete = function (event) {
+                            };
+                            transaction.onerror = function (event) {
+                                console.log(event);
+                            };
+                            let customersObjectStore = transaction.objectStore("customers");
+                            request = customersObjectStore.add(customerEntry);
+                            request.onsuccess = function (event) {
+                                updateTableBody();
+                            };
+                        } else {
+                            console.log("ID doest not exist");
+                        }
+                    };
+                } else {
+                    const customerEntry = {
+                        name: name,
+                        surname: surname,
+                        phoneNumber: phoneNumber,
+                        email: email,
+                        idNumber: idNumber,
+                        address: address,
+                        city: city,
+                        postalCode: postalCode
+                    }
+                    let transaction = db.transaction(["customers"], "readwrite");
+                    transaction.oncomplete = function (event) {
+                    };
+                    transaction.onerror = function (event) {
+                        console.log(event);
+                    };
+                    let customersObjectStore = transaction.objectStore("customers");
+                    let request = customersObjectStore.add(customerEntry);
+                    request.onsuccess = function (event) {
+                    };
+                }
+                updateTableBody();
+            }
 
-				request.onerror = event => {
-					console.log("Error happened: ", event);
-				}
+            document.getElementById('searchButton').onclick = function (e) {
+                let word = document.getElementById('searchInput').value;
+                if (word == null) {
+                    word = "";
+                }
+                let words = word.split(' ');
+                document.getElementById("customers-table-body").innerHTML = "";
+                const request = db.transaction("customers").objectStore("customers").openCursor();
+                request.onerror = function (event) {
+                    console.log(event);
+                };
+                request.onsuccess = function (event) {
+                    cursor = event.target.result;
 
-				request.onsuccess = event => {
-					db = event.target.result;
-					console.log("success");
-					var transaction = db.transaction(['name']);
-					var objectStore = transaction.objectStore('name');
-					var request = objectStore.getAll();
-					request.onerror = event => {
-						out.innerHTML = "error when getting data " + event.toString();
-					}
+                    if (cursor) {
+                        words.forEach(function (keyword) {
+                            if ((
+                                cursor.value.name.toLowerCase().includes(keyword.toLowerCase()) ||
+                                cursor.value.surname.toLowerCase().includes(keyword.toLowerCase()) ||
+                                cursor.value.phoneNumber.toLowerCase().includes(keyword.toLowerCase()) ||
+                                cursor.value.email.toLowerCase().includes(keyword.toLowerCase()) ||
+                                cursor.value.idNumber.toLowerCase().includes(keyword.toLowerCase()) ||
+                                cursor.value.address.toLowerCase().includes(keyword.toLowerCase()) ||
+                                cursor.value.city.toLowerCase().includes(keyword.toLowerCase()) ||
+                                cursor.value.postalCode.toLowerCase().includes(keyword.toLowerCase()))) {
+                                document.getElementById("customers-table-body").innerHTML +=
+                                    "<tr><td>" + cursor.key + "</td><td>"
+                                    + cursor.value.name + "</td><td>"
+                                    + cursor.value.surname + "</td><td>"
+                                    + cursor.value.phoneNumber + "</td><td>"
+                                    + cursor.value.email + "</td><td>"
+                                    + cursor.value.idNumber + "</td><td>"
+                                    + cursor.value.address + "</td><td>"
+                                    + cursor.value.city + "</td><td>"
+                                    + cursor.value.postalCode
+                                    + "</td><td><button id=\"delButton\" value=\"" + cursor.key + "\">Usuń</button>"
+                                    + "</td></tr>";
+                                document.getElementById('delButton').onclick = function (e) {
+                                    let idToDelete = parseInt(document.getElementById('delButton').value);
+                                    let request = db.transaction(["customers"], "readwrite").objectStore("customers").delete(idToDelete);
+                                    document.getElementById('searchInput').value = "";
+                                    updateTableBody();
+                                }
+                            }
+                            cursor.continue();
+                        });
 
-					request.onsuccess = event => {
-						reloadList();
-						// console.log("Result: ");
-						// var div = document.getElementById("saved_users");
-						// var ul = document.createElement("ul");
-						// for (var r of request.result) {
-						// 	var li = document.createElement("li");
-						// 	li.innerHTML = `<span onclick="loadByKey('${r.myKey}')">${r.myKey}</span>`;
-						// 	ul.appendChild(li);
-						// }
-						// div.appendChild(ul);
-						//
-						//
-						// console.log("got data", request.result);
-						// const fields = ["email", "postal", "nip", "dowod", "ip", "www", "windirbig", "windir", "etcdir", "ipv6addr", "phonenb"];
-						// var queried_object = JSON.parse(request.result.json);
-						// for (var i of fields) {
-						// 	if (i in document.forms[0]) {
-						// 		document.forms[0][i].value = queried_object[i];
-						// 	}
-						// }
-					}
+                    }
+                };
+            }
 
-					transaction.oncomplete = event => {
-						console.log("All done inital load");
-					};
-				}
+            function randomString(arr) {
+                let randomIndex = Math.floor(Math.random() * arr.length);
+                return arr[randomIndex];
+            }
 
-				request.onupgradeneeded = event => {
-					db = event.target.result;
+            document.getElementById('generateButton').onclick = function (e) {
+                document.getElementById("nameInput").value = randomString(['Bartosz', 'Maciej', 'Jan', 'Paweł']);
+                document.getElementById("surnameInput").value = randomString(['Kowalski', 'Nowak', 'Cichy', 'Wawelski']);
+                document.getElementById("emailInput").value = Math.random().toString(36).substring(2, 5) + Math.random().toString(36).substring(2, 5) + '@gmail.com';
+                document.getElementById("addressInput").value = randomString(['Wilcza 2', "Piłsudzkiego 12", "Wolskiego 4", "Pabianicka 144"]);
+                document.getElementById("cityInput").value = randomString(['Warszawa', 'Kraków', 'Łódź', 'Wrocław']);
+                document.getElementById("postalCodeInput").value = (Math.floor(Math.random() * 89 + 10) + '-' + Math.floor(Math.random() * 899 + 100)).toString();
+                document.getElementById("phoneNumberInput").value = Math.floor(Math.random() * 899 + 100).toString() + Math.floor(Math.random() * 899 + 100).toString() + Math.floor(Math.random() * 899 + 100).toString();
+                document.getElementById("IDInput").value = randomString(['ABC123456', 'BCA123456', 'AAA123456', 'BBB123456', 'AWC123456', 'ACC123456', 'AFG123456', 'AFH123456',
+                    'ADG123456', 'WQQ123456']);
+            }
+            document.getElementById('useWorker').onclick = function (event) {
+                const worker = new Worker('worker.js');
+                const name = document.getElementById('nameInput').value;
+                const surname = document.getElementById('surnameInput').value;
+                const phoneNumber = document.getElementById('phoneNumberInput').value;
+                const email = document.getElementById('emailInput').value;
+                const idNumber = document.getElementById('IDInput').value;
+                const address = document.getElementById('addressInput').value;
+                const city = document.getElementById('cityInput').value;
+                const postalCode = document.getElementById('postalCodeInput').value;
+                const entry = {
+                    name: name,
+                    surname: surname,
+                    phoneNumber: phoneNumber,
+                    email: email,
+                    idNumber: idNumber,
+                    address: address,
+                    city: city,
+                    postalCode: postalCode
+                }
+                worker.postMessage(JSON.stringify(entry));
+                worker.addEventListener('message', handleMessageFromWorker);
+            }
 
-					var objectStore = db.createObjectStore("name", {keyPath: 'myKey'});
-					// {myKey: 1, json: ""}
-					objectStore.createIndex("json", "json", { unique: false});
+            function handleMessageFromWorker(e) {
+                result = JSON.parse(e.data);
+                document.getElementById("nameInput").value = result['name'];
+                document.getElementById("surnameInput").value = result['surname'];
+                document.getElementById("emailInput").value = result['email'];
+                document.getElementById("addressInput").value = result['address'];
+                document.getElementById("cityInput").value = result['city'];
+                document.getElementById("postalCodeInput").value = result['postal'];
+                document.getElementById("phoneNumberInput").value = result['phone'];
+                document.getElementById("IDInput").value = result['id_card'];
+            }
 
-					objectStore.transaction.oncomplete = event => {
-						var nameObjectStore = db.transaction("name", 'readwrite').objectStore('name');
-						const fields = ["email", "postal", "nip", "dowod", "ip", "www", "windirbig", "windir", "etcdir", "ipv6addr", "phonenb"];
-						var data = {}
-						for (var i of fields) {
-							data[i] = '';
-						}
-						nameObjectStore.add({myKey: "data", json: JSON.stringify(data)});
-					}
+            function updateTableBody() {
+                document.getElementById("customers-table-body").innerHTML = "";
+                let request = db.transaction("customers").objectStore("customers").openCursor();
+                request.onerror = function (event) {
+                    console.log(event);
+                };
+                request.onsuccess = function (event) {
+                    cursor = event.target.result;
+                    if (cursor) {
+                        document.getElementById("customers-table-body").innerHTML +=
+                            "<tr><td>" + cursor.key + "</td><td>"
+                            + cursor.value.name + "</td><td>"
+                            + cursor.value.surname + "</td><td>"
+                            + cursor.value.phoneNumber + "</td><td>"
+                            + cursor.value.email + "</td><td>"
+                            + cursor.value.idNumber + "</td><td>"
+                            + cursor.value.address + "</td><td>"
+                            + cursor.value.city + "</td><td>"
+                            + cursor.value.postalCode
+                            + "</td><td><button id=\"delButton\" value=\"" + cursor.key + "\">Usuń</button>"
+                            + "</td></tr>";
+                        document.getElementById('delButton').onclick = function (e) {
+                            let idToDelete = parseInt(document.getElementById('delButton').value);
+                            let request = db.transaction(["customers"], "readwrite").objectStore("customers").delete(idToDelete);
+                            document.getElementById('searchInput').value = "";
+                            updateTableBody();
+                        }
+                    }
+                    cursor.continue();
+                }
+            }
+        }
 
-					console.log("upgradee");
-				}
-			}
+    </script>
+</head>
 
-			function reloadList() {
-				var transaction = db.transaction(['name']);
-					var objectStore = transaction.objectStore('name');
-					var request = objectStore.getAll();
-					request.onerror = event => {
-						out.innerHTML = "error when getting data " + event.toString();
-					}
+<body onload="initDatabase()">
+<div class="form-style-6">
+    <form id="addClientForm">
+        <div>
+            <label for="recordIDinput">ID (tylko jeśli edytujesz rekord)</label>
+            <input id="recordIDinput">
+        </div>
+        <div>
+            <label for="nameInput">Imię</label>
+            <input required type="text" id="nameInput">
+        </div>
+        <div>
+            <label for="surnameInput">Nazwisko</label>
+            <input required type="text" id="surnameInput">
+        </div>
+        <div>
+            <label for="phoneNumberInput">Numer telefonu</label>
+            <input required pattern="^(?:\(?\?)?(?:[-\.\(\)\s]*(\d)){9}\)?$" type="text" id="phoneNumberInput">
+        </div>
+        <div>
+            <label for="emailInput">Adres email</label>
+            <input required type="email" id="emailInput">
+        </div>
+        <div>
+            <label for="IDInput">Numer i seria dowodu</label>
+            <input required type="text" pattern="[A-Z]{3}[0-9]{6}" id="IDInput">
+        </div>
+        <div>
+            <label for="addressInput">Adres</label>
+            <input required type="text" id="addressInput">
+        </div>
+        <div>
+            <label for="cityInput">Miasto</label>
+            <input required type="text" id="cityInput">
+        </div>
+        <div>
+            <label for="postalCodeInput">Kod pocztowy</label>
+            <input required type="text" id="postalCodeInput" pattern="\d{2}-\d{3}">
+        </div>
+        <button id="generateButton">Wygeneruj dane</button>
+        <button type="submit" id="addButton">Dodaj</button>
 
-					request.onsuccess = event => {
-						console.log("Result: ");
-						var div = document.getElementById("saved_users");
-						div.innerHTML = "";
-						var ul = document.createElement("ul");
-						for (var r of request.result) {
-							var li = document.createElement("li");
-							li.innerHTML = `<span onclick="loadByKey('${r.myKey}')">${r.myKey}</span>`;
-							ul.appendChild(li);
-						}
-						div.appendChild(ul);
-					}
-			}
+    </form>
+</div>
 
-			function loadByKey(e) {
-				console.log(e);
-				var transaction = db.transaction(['name']);
-				var objectStore = transaction.objectStore('name');
-				var request = objectStore.get(e);
-				request.onerror = event => {
-					out.innerHTML = "error when getting data " + event.toString();
-				}
+<div class="form-style-6">
+    <button id="useWorker">Użyj workera</button>
+</div>
 
-				request.onsuccess = event => {
-					console.log("got data", request.result);
-					const fields = ["email", "postal", "nip", "dowod", "ip", "www", "windirbig", "windir", "etcdir", "ipv6addr", "phonenb"];
-					var queried_object = JSON.parse(request.result.json);
-					for (var i of fields) {
-						if (i in document.forms[0]) {
-							document.forms[0][i].value = queried_object[i];
-						}
-					}
-				}
-
-				transaction.oncomplete = event => {
-					console.log("All done");
-				};
-			}
-
-			function savedata() {
-				const fields = ["email", "postal", "nip", "dowod", "ip", "www", "windirbig", "windir", "etcdir", "ipv6addr", "phonenb"];
-				var data = {}
-				for (var i of fields) {
-					data[i] = document.forms[0][i].value;
-				}
-				console.log("data", data);
-
-				// Sprawdzanie czy użytkownik już istnieje w bazie.
-				var objectStore = db.transaction(['name']).objectStore('name');
-				var requestGet = objectStore.get(data.email);
-
-				requestGet.onerror = event => {
-					out.innerHTML = "error when getting data " + event.toString();
-				}
-
-				requestGet.onsuccess = event => {
-					// Użytkownik istnieje w bazie
-					if (requestGet.result) { 
-						var res = requestGet.result;
-						res.json = JSON.stringify(data);
-						var objectStore2 = db.transaction(['name'], 'readwrite').objectStore('name');
-						var requestUpdate = objectStore2.put(res);
-						requestUpdate.onerror = event => {
-							out.innerHTML = "error when updating data " + event.toString();
-						}
-
-						requestUpdate.onsuccess = event => {
-							console.log("updated data successfully");
-						}
-					} else { // Dodawanie nowego użytkownika
-						var transaction = db.transaction(['name'], 'readwrite');
-						var objectStore1 = transaction.objectStore('name');
-						var requestAdd = objectStore1.add({myKey: data.email, json: JSON.stringify(data)});
-						// var requestUpdate = objectStore.put(data);
-
-						requestAdd.onerror = event => {
-							out.innerHTML = "error when updating data " + event.toString();
-						}
-
-						requestAdd.onsuccess = event => {
-							console.log("updated data successfully");
-							reloadList();
-						}
-					}
-				}
-			}
-
-			var fields = document.getElementsByClassName('removable_field');
-			// console.log(fields);
-
-			var draggableelement = null;
-
-			function dragstart(event) {
-				event.dataTransfer.setData('text/plain', event.target.id);
-				
-				event
-					.target
-					.style
-					.backgroundColor = 'yellow';
-
-				draggableelement = event.target;
-			}
-			
-			function dragover(event) {
-				event.preventDefault();
-				event.target.style.background = 'pink';
-			}
-			function dragleave(event) {
-				event.preventDefault();
-				event.target.style.background = 'none';
-			}
-
-			function dropp(event) {
-    			event.preventDefault();
-				console.log("dropped");
-				let dropzone = event.target;
-				event.target.style.background = 'none';
-				draggableelement.style.background = 'none';
-				var temp = event.target.innerHTML + "";
-				document.forms[0].insertBefore(draggableelement, event.target.nextSibling);
-				document.forms[0].insertBefore(event.target.nextSibling, draggableelement);
-				// draggableelement.innerHTML = temp;
-				draggableelement = null;
-				event.dataTransfer.clearData();
-			}
-
-			for (let e of fields) {
-				e.addEventListener('dragstart', dragstart);
-				e.addEventListener('drop', dropp);
-				e.addEventListener('dragover', dragover);
-				e.addEventListener('dragleave', dragleave);
-				e.setAttribute('draggable', true);
-				// console.log(e.addEventListener('click', () => {console.log('test')}));
-			}
+<div class="form-style-6">
+    <label for="IDInput">Wyszukiwarka </label>
+    <input id="searchInput">
+    <button id="searchButton">Wyszukaj</button>
+</div>
 
 
+<table id="customers-table" class="styled-table">
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Imię</th>
+        <th>Nazwisko</th>
+        <th>Numer telefonu</th>
+        <th>Email</th>
+        <th>Numer dowodu</th>
+        <th>Adres</th>
+        <th>Miasto</th>
+        <th>Kod pocztowy</th>
+    </tr>
+    </thead>
+    <tbody id="customers-table-body">
+    </tbody>
+</table>
 
-			function removethis(e) {
-				e.target.parentElement.remove();
-			}
-		</script>
-	</body>
+</body>
 </html>
