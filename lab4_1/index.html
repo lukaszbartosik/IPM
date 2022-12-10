@@ -99,11 +99,11 @@ function randomString(arr) {
             }
 
             document.getElementById('generateButton').onclick = function (e) {
-                document.getElementById("nameInput").value = randomString(['Bartosz', 'Maciej', 'Jan', 'Paweł']);
-                document.getElementById("authorInput").value = Math.random().toString(36).substring(2, 5) + Math.random().toString(36).substring(2, 5) + '@gmail.com';
-                document.getElementById("isbnInput").value = randomString(['ABC123456', 'BCA123456', 'AAA123456', 'BBB123456', 'AWC123456', 'ACC123456', 'AFG123456', 'AFH123456',
+            document.getElementById("nameInput").value = randomString(['Bartosz', 'Maciej', 'Jan', 'Paweł']);
+            document.getElementById("authorInput").value = Math.random().toString(36).substring(2, 5) + Math.random().toString(36).substring(2, 5) + '@gmail.com';
+            document.getElementById("isbnInput").value = randomString(['ABC123456', 'BCA123456', 'AAA123456', 'BBB123456', 'AWC123456', 'ACC123456', 'AFG123456', 'AFH123456',
                     'ADG123456', 'WQQ123456']);
-                document.getElementById("postcode").value = (Math.floor(Math.random() * 89 + 10) + '-' + Math.floor(Math.random() * 899 + 100)).toString();
+            document.getElementById("postcode").value = (Math.floor(Math.random() * 89 + 10) + '-' + Math.floor(Math.random() * 899 + 100)).toString();
                 
             }
 
@@ -165,7 +165,7 @@ function updatetable(){
 
     <table id="books-table">
         <thead>
-            <tr><th>NAME</th><th>EMAIL</th><th>NUMER DOWODU OSOBISTEGO</th><th>KOD POCZTOWY</th></tr>
+            <tr><th>NAME </th><th> EMAIL </th><th> NUMER DOWODU OSOBISTEGO </th><th> KOD POCZTOWY </th></tr>
         </thead>
         <tbody id="books-table-body">
         </tbody>
