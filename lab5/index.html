@@ -10,7 +10,7 @@
             <li class="element" id="item">
                 <form>
                     <label for="email">Podaj email:</label>
-                    <input required type="email" type="mail" id="email" name="email" placeholder="abcd@gmail.com" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$">
+                    <input required type="email" type="mail" id="email" name="email" placeholder="lukasz@edu.pl" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$">
                     <input class="but" type="submit" value="OK">
                     <br><br>
                 </form>
@@ -132,7 +132,7 @@ var border_style = 'solid 2px red';
 
 var database_var = 'customerDB';
 var table_var = 'clients';
-/*
+
 //ADD EVENT TO ITEM's BUTTON (REMOVING)
 list.addEventListener('click', function(e){
     if(e.target && e.target.nodeName == "BUTTON") {
@@ -140,7 +140,7 @@ list.addEventListener('click', function(e){
     }
 });
 
-*/
+
   
 //DRAG START EVENT, INITIALIZE VAR draggin WITH SOURCE OF EVENT
 document.addEventListener('dragstart', function(event) {
@@ -299,7 +299,7 @@ function exampleText() {
   var ip6 = document.getElementById('ip6');
   var catalog = document.getElementById('catalog');
   var phone = document.getElementById('phone');
-  
+
   email.value = Math.random().toString(36).substring(2, 5) + Math.random().toString(36).substring(2, 5) + '@gmail.com';;
   zipcode.value = (Math.floor(Math.random() * 89 + 10) + '-' + Math.floor(Math.random() * 899 + 100)).toString();;
   nip.value = randomString(["100-10-20-200", '200-60-80-700', '897-87-52-725', '897-85-78-897']);
