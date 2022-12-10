@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <head>
-    <title>Task7</title>
+    <title>Task 7b</title>
     <meta charset="UTF-8">
     <link rel="stylesheet" href="index.css">
     <script>
@@ -205,11 +205,11 @@
                     postalCode: postalCode
                 }
                 worker.postMessage(JSON.stringify(entry));
-                worker.addEventListener('message', handleMessageFromWorker);
+                worker.addEventListener('message', handleMessage);
             }
 
-            function handleMessageFromWorker(e) {
-                result = JSON.parse(e.data);
+            function handleMessage(e) {
+                let result = JSON.parse(e.data);
                 document.getElementById("nameInput").value = result['name'];
                 document.getElementById("surnameInput").value = result['surname'];
                 document.getElementById("emailInput").value = result['email'];
@@ -219,6 +219,32 @@
                 document.getElementById("phoneNumberInput").value = result['phone'];
                 document.getElementById("IDInput").value = result['id_card'];
             }
+
+            document.getElementById('useColorWorker').onclick = function triggerColorFilter(e) {
+                const entry = {
+                    name: document.getElementById('nameInput').value,
+                    surname: document.getElementById('surnameInput').value,
+                    phoneNumber: document.getElementById('phoneNumberInput').value,
+                    email: document.getElementById('emailInput').value,
+                    idNumber: document.getElementById('IDInput').value,
+                    address: document.getElementById('addressInput').value,
+                    city: document.getElementById('cityInput').value,
+                    postalCode: document.getElementById('postalCodeInput').value
+                }
+                const worker = new Worker('colorFilterWorker.js');
+                worker.postMessage(JSON.stringify(entry));
+                worker.addEventListener('message', handleColorFilterMessage);
+            }
+
+            function handleColorFilterMessage(e) {
+                let result = JSON.parse(e.data);
+                let imageURL = document.getElementById('filterImage').value;
+                let style = `linear-gradient(0deg,rgba(${result.R},${result.G},${result.B},0.50),
+                rgba(${result.R},${result.G},${result.B},0.50)), url('${imageURL}')`;
+                document.getElementById('imageForFilter').style['background'] = style;
+                document.getElementById('imageForFilter').style['backgroundSize'] = 'cover';
+            }
+
 
             function updateTableBody() {
                 document.getElementById("customers-table-body").innerHTML = "";
@@ -297,12 +323,18 @@
         </div>
         <button id="generateButton">Wygeneruj dane</button>
         <button type="submit" id="addButton">Dodaj</button>
-
     </form>
 </div>
 
 <div class="form-style-6">
-    <button id="useWorker">Użyj workera</button>
+    <button id="useWorker">Użyj workera zamiany słów</button>
+</div>
+<div class="form-style-6">
+    <div>
+        <label for="filterImage">Podaj url do zdjęcia</label>
+        <input id="filterImage">
+    </div>
+    <button id="useColorWorker">Użyj workera filtra</button>
 </div>
 
 <div class="form-style-6">
@@ -311,6 +343,8 @@
     <button id="searchButton">Wyszukaj</button>
 </div>
 
+<div id="imageForFilter">
+</div>
 
 <table id="customers-table" class="styled-table">
     <thead>
@@ -329,6 +363,5 @@
     <tbody id="customers-table-body">
     </tbody>
 </table>
-
 </body>
 </html>
