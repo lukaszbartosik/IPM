@@ -288,19 +288,18 @@ function showCustomers(e){
 	}
 }
 function exampleText() {
-  var email = document.getElementById('email');
-  var zipcode = document.getElementById('zipcode');
-  var nip = document.getElementById('nip');
-  var dowod = document.getElementById('dowod');
+  var email = document.getElementById('email').value = Math.random().toString(36).substring(2, 5) + Math.random().toString(36).substring(2, 5) + '@gmail.com';
+  var zipcode = document.getElementById('zipcode').value = (Math.floor(Math.random() * 89 + 10) + '-' + Math.floor(Math.random() * 899 + 100)).toString();
+  var nip = document.getElementById('nip').value = ;
+  var dowod = document.getElementById('dowod').value = randomString(['ABC123456', 'BCA123456', 'AAA123456', 'BBB123456', 'AWC123456', 'ACC123456', 'AFG123456', 'AFH123456','ADG123456', 'WQQ123456']);
   var ip4 = document.getElementById('ip4');
   var www = document.getElementById('www');
   var diskA = document.getElementById('diskA');
   var diskB = document.getElementById('diskB');
   var ip6 = document.getElementById('ip6');
   var catalog = document.getElementById('catalog');
-  var phone = document.getElementById('phone');
-  email.value = "raz@gmail.com";
-  zipcode.value = "91-112";
+  var phone = document.getElementById('phone').value = Math.floor(Math.random() * 899 + 100).toString() + Math.floor(Math.random() * 899 + 100).toString() + Math.floor(Math.random() * 899 + 100).toString();
+
   nip.value = "100-10-20-200";
   dowod.value = "ABC 123456";
   ip4.value = "192.168.1.1";
