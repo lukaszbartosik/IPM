@@ -268,7 +268,7 @@
       <input required type="text" id="postalCodeInput" placeholder="97-300" pattern="\d{2}-\d{3}$">
     </div>
     <button id="generateButton">Wygeneruj dane</button>
-    <button type="submit" id="addButton">Dodaj</button>
+    <button onclick="updateTableBody()" type="submit" id="addButton">Dodaj</button>
   </form>
 </div>
 
@@ -279,8 +279,7 @@
 
 
 <table id="customers-table" class="styled-table">
-  <thead>
-  <tr>
+  <thead><tr>
     <th>ID</th>
     <th>Imię</th>
     <th>Nazwisko</th>
@@ -290,10 +289,8 @@
     <th>Adres</th>
     <th>Miasto</th>
     <th>Kod pocztowy</th>
-  </tr>
-  </thead>
-  <tbody id="customers-table-body">
-  </tbody>
+  </tr> </thead>
+  <tbody id="customers-table-body"></tbody>
 </table>
 </body>
 </html>
