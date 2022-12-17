@@ -1,0 +1,95 @@
+h1 {
+
+  background: #43D1AF;
+  padding: 20px 0;
+  font-size: 190%;
+  font-weight: 300;
+  text-align: center;
+  color: #fff;
+  margin: -16px -16px 16px -16px;
+}
+
+
+#MENU {
+  border-collapse: collapse;
+  margin: 25px 0;
+  font-size: 0.9em;
+  font-family: sans-serif;
+  min-width: 100px;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+  border: 1px solid #ddd;
+  padding: 8px;
+  position: relative;
+}
+
+#ClientTable td, #customers th {
+  border-collapse: collapse;
+  margin: 25px 0;
+  font-size: 0.9em;
+  font-family: sans-serif;
+  min-width: 150px;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+  border: 1px solid #ddd;
+  padding: 8px;
+  position: relative;
+}
+
+#ClientsHead td, #customers th {
+  border: 1px solid #ddd;
+  padding: 16px;
+  min-width: 134px;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+  text-align: center;
+}
+
+#addButton {
+  margin-top: 10px;
+  margin-bottom: 10px;
+  background-color: #43D1AF; 
+  border: none;
+  color: white;
+  padding: 15px 32px;
+  text-align: center;
+  display: inline-block;
+  font-size: 16px;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+}
+
+#EdtButton {
+  margin-top: 10px;
+  margin-bottom: 10px;
+  background-color: #43D1AF;
+  border: none;
+  color: white;
+  padding: 15px 32px;
+  text-align: center;
+  display: inline-block;
+  font-size: 16px;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+}
+
+#RandomDataButton {
+  margin-top: 10px;
+  margin-bottom: 10px;
+  background-color: #43D1AF;
+  border: none;
+  color: white;
+  padding: 15px 32px;
+  text-align: center;
+  display: inline-block;
+  font-size: 16px;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+}
+
+.styled-button {
+  background-color: #43D1AF;
+  border: none;
+  color: white;
+  padding: 5px 11px;
+  text-align: center;
+  display: inline-block;
+  font-size: 8px;
+}
+
+
+
