@@ -1,0 +1,54 @@
+<html>
+
+<head>
+  <title>Menadżer klientów</title>
+  <meta charset="UTF-8" />
+  <script src="script.js"></script>
+  <link rel="stylesheet" href="style.css"/>
+
+ </head>
+
+<body onload="init()">
+<h1>IPM LAB05</h1>
+
+<div id="filtr">
+  <form>
+    <label>WYSZUKIWANIE:</label>
+    <input id="search">
+  </form>
+</div>
+
+<div class="MENU" class="form-style-6">
+  <form id="inputy">
+  <label>IMIĘ: </label>
+  <input id="nameInput" placeholder="Imie..." pattern="[a-z]">
+  <label>NAZWISKO: </label>
+  <input id="lastNameInput" placeholder="Nazwisko..." pattern="[a-z]">
+  <label>ADRES: </label>
+  <input id="adresInput" placeholder="Ulica Nr">
+  <label>PESEL: </label>
+  <input id="PeselInput" placeholder="12345678901" pattern="[0-9]{11}">
+  <label>NR TEL.: </label>
+  <input id="PhoneInput" placeholder="576-234-523" pattern="[0-9]{9}">
+  <label>MAIL: </label>
+  <input id="MailInput"placeholder="example@mail.com" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$">
+</form>
+</div>
+
+<div>
+  <button id="addButton">Dodaj</button>
+  <button id="EdtButton">Edytuj</button>
+  <button id="RandomDataButton">Wygeneruj dane</button>
+</div>
+
+<div>
+  <table>
+    <tbody id="ClientsHead"></tbody>
+  </table>
+  <table id="ClientTable">
+    <tbody id="ClientsBody"></tbody>
+  </table>
+</div>
+</body>
+
+</html>
