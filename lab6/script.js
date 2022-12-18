@@ -279,11 +279,11 @@ document.getElementById('searching').onclick = function(e) {
   var request = objectStore.openCursor();
   request.onsuccess = function(event) {
       var cursor = event.target.result;
+      if (cursor){
           if (cursor.value.column.indexOf(keyword) !== -1) {                
-            console.log("clearing table")
-            var Table = document.getElementById("userTable");
-            Table.innerHTML = "";
+            
           }  
+        }
          
       }
   };
