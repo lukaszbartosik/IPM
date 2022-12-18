@@ -284,7 +284,7 @@ document.getElementById('searching').onclick = function(e) {
       var cursor = event.target.result;
       if (cursor){
           if (cursor.value.column.indexOf(keyword) !== -1) {                
-            
+            console.log()
           }  
         }
          
