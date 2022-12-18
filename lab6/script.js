@@ -274,7 +274,7 @@ function updatetable(){
 
 document.getElementById('searching').onclick = function(e) {
   document.getElementById("searchedBody").innerHTML = "";
-
+  var sbodyRef  = document.createElement('sbody');
 
   var keyword = "foooo";
   var transaction = db.transaction("users", "readwrite");
