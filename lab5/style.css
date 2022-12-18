@@ -2,19 +2,35 @@ body {
     background-color: #c9ea98;
   }
 h1 {
-
     background: #d7decd;
     padding: 20px 0;
     font-size: 190%;
     font-weight: 800;
     text-align: center;
     color: #203206;
-    border: 3px solid #203206
+    border: 3px solid #20320600;
     margin: -16px -16px 16px -16px;
     border-radius: 10px;
     width: 1020px;
   }
   
+  #filtr{
+    background-color: #d7decd;
+    align-content: center;
+    display:inline-flex;
+    flex-direction:column;
+    text-align: center;
+    font-size: 1.2em;
+    font-family: sans-serif;
+    padding: 10px;
+    min-width: 1020px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    box-sizing: border-box;
+    margin:5px 0;
+    box-shadow:0 0 15px 4px rgba(0,0,0,0.06);
+    -moz-box-align: center;
+  }
   
   #inputy {
     background-color: #d7decd;

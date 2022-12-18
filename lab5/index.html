@@ -11,14 +11,21 @@
 <body onload="init()">
 <h1>IPM LAB05</h1>
 
+<div id="filtr">
+  <form>
+    <label>WYSZUKIWANIE:</label>
+    <input id="search">
+  </form>
+</div>
+
 <div class="MENU" class="form-style-6">
   <form id="inputy">
   <label>IMIĘ: </label>
-  <input id="nameInput" placeholder="Imie...">
+  <input id="nameInput" placeholder="Imie..." pattern="[a-z]">
   <label>NAZWISKO: </label>
-  <input id="lastNameInput" placeholder="Nazwisko...">
+  <input id="lastNameInput" placeholder="Nazwisko..." pattern="[a-z]">
   <label>ADRES: </label>
-  <input id="adresInput" placeholder="ul.Ulica Nr">
+  <input id="adresInput" placeholder="Ulica Nr">
   <label>PESEL: </label>
   <input id="PeselInput" placeholder="12345678901" pattern="[0-9]{11}">
   <label>NR TEL.: </label>
