@@ -276,6 +276,26 @@ document.getElementById('searching').onclick = function(e) {
   document.getElementById("searchedBody").innerHTML = "";
   var sbodyRef  = document.createElement('sbody');
 
+  var nameTd = document.createElement('td');
+  nameTd.textContent =  element.name;
+
+  var lastnameTd = document.createElement('td');
+  lastnameTd.textContent =  element.lastname;
+
+  var adresTd = document.createElement('td');
+  adresTd.textContent =  element.adres;
+
+  var peselTd = document.createElement('td');
+  peselTd.textContent =  element.pesel;
+
+  var phoneTd = document.createElement('td');
+  phoneTd.textContent =  element.phone;
+
+  var mailTd = document.createElement('td');
+  mailTd.textContent =  element.mail;
+
+  
+
   var keyword = "foooo";
   var transaction = db.transaction("users", "readwrite");
   var objectStore = transaction.objectStore("users");
