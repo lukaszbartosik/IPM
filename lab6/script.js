@@ -273,7 +273,10 @@ function updatetable(){
 }
 
 document.getElementById('searching').onclick = function(e) {
-  var keyword = "foo";
+  document.getElementById("searchedBody").innerHTML = "";
+
+
+  var keyword = "foooo";
   var transaction = db.transaction("users", "readwrite");
   var objectStore = transaction.objectStore("users");
   var request = objectStore.openCursor();
