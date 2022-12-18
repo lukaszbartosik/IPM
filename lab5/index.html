@@ -9,21 +9,23 @@
  </head>
 
 <body onload="init()">
-<h1>Menadżer klientów</h1>
+<h1>IPM LAB05</h1>
 
 <div class="MENU" class="form-style-6">
-  <label>Imię: </label>
+  <form id="inputy">
+  <label>IMIĘ: </label>
   <input id="nameInput" placeholder="Imie...">
-  <label>Nazwisko: </label>
+  <label>NAZWISKO: </label>
   <input id="lastNameInput" placeholder="Nazwisko...">
   <label>ADRES: </label>
   <input id="adresInput" placeholder="ul.Ulica Nr">
   <label>PESEL: </label>
-  <input id="PeselInput" placeholder="12345678901">
-  <label>Tel: </label>
-  <input id="PhoneInput" placeholder="576-234-523">
-  <label>Mail: </label>
-  <input id="MailInput"placeholder="example@mail.com">
+  <input id="PeselInput" placeholder="12345678901" pattern="[0-9]{11}">
+  <label>NR TEL.: </label>
+  <input id="PhoneInput" placeholder="576-234-523" pattern="[0-9]{9}">
+  <label>MAIL: </label>
+  <input id="MailInput"placeholder="example@mail.com" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$">
+</form>
 </div>
 
 <div>

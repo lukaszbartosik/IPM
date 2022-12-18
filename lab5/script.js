@@ -79,12 +79,12 @@ function randomString(arr) {
 }
 document.getElementById('RandomDataButton').onclick = function(e)
 {
-  document.getElementById('nameInput').value = randomString(['Bartek','Stefan','Marcin','Jerzy','Piotrek', 'Maciej', 'Janek', 'Paweł','Kasia']);
-  document.getElementById('lastNameInput').value = randomString(['Kowalski','Gabrych','Marcinkowski','Stasiak','Kazimierczyk', 'Dobrowolski', 'Marciniak', 'Chałubek','Koza']);
+  document.getElementById('nameInput').value = randomString(['Bartosz','Stanisław','Marcin','Łukasz','Julia', 'Maciej', 'Jan', 'Paweł','Katarzyna']);
+  document.getElementById('lastNameInput').value = randomString(['Kowalski','Nowas','Marcinkowski','Bartosik','Wnuk', 'Dobrowolski', 'Marciniak', 'Kałuża','Koza']);
   document.getElementById('adresInput').value = randomString(['Sloneczna 45','Malinowa 0','Zrodlana 10','Pomaranczowa 50','Wroblewskiego 32', 'Brukowa 15', 'Debowa 2']);
   document.getElementById('PeselInput').value = (Math.floor(Math.random() * 99999999999 + 10)).toString();
   document.getElementById('PhoneInput').value = (Math.floor(Math.random() * 999999999 + 10)).toString();
-  document.getElementById('MailInput').value = randomString(['asdf@gmail.com','WGWEdf@onet.com','html@gmail.com','Jacek@wp.com','Stefano@outlook.com', 'Franklin@gmail.com']);
+  document.getElementById('MailInput').value = randomString(['janina@gmail.com','wroclaw@onet.com','html@gmail.com','jacek@wp.com','andrzej@outlook.com', 'lukasz@gmail.com']);
 
 };
 //window.onload = updatetable();
