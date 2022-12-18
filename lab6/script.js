@@ -272,4 +272,24 @@ function updatetable(){
   };
 }
 
+document.getElementById('searching').onclick = function(e) {
+  var keyword = "foo";
+  var transaction = db.transaction("users", "readwrite");
+  var objectStore = transaction.objectStore("users");
+  var request = objectStore.openCursor();
+  request.onsuccess = function(event) {
+      var cursor = event.target.result;
+          if (cursor.value.column.indexOf(keyword) !== -1) {                
+              $('ClientsBody').empty();
+          }  
+         
+      }
+  };
+
+
+
+
+
+
+
 }
