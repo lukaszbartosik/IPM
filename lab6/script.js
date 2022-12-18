@@ -280,7 +280,9 @@ document.getElementById('searching').onclick = function(e) {
   request.onsuccess = function(event) {
       var cursor = event.target.result;
           if (cursor.value.column.indexOf(keyword) !== -1) {                
-              $('ClientsBody').empty();
+            console.log("clearing table")
+            var Table = document.getElementById("userTable");
+            Table.innerHTML = "";
           }  
          
       }
